@@ -9,8 +9,7 @@ import Foundation
 
 protocol APIBaseDelegate {
     var api: API { get }
-    var headerName: String { get }
-    var forHTTPHeaderField: String { get }
+    var method: String { get }
     var queryItems: [URLQueryItem] { get }
     func onResponseSuccess(data: Data)
     func onResponseFaild(message: String)

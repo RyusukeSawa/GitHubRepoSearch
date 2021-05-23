@@ -17,9 +17,9 @@ struct APIClient {
         urlComponents.queryItems = base.queryItems
         //URLリクエストを作成
         var request = URLRequest(url: urlComponents.url!)
-        request.httpMethod = "GET"
-        //ヘッダ設定
-//        request.setValue(base.headerName, forHTTPHeaderField: base.forHTTPHeaderField)
+        //メソッド設定
+        request.httpMethod = base.method
+
         CLog.d(request)
         //通信
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in

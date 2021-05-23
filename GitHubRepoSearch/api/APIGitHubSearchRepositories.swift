@@ -21,12 +21,8 @@ struct APIGitHubSearchRepositories: APIBaseDelegate {
         return .SEARCH_REPOSITORIES
     }
 
-    var headerName: String {
-        return "Accept"
-    }
-
-    var forHTTPHeaderField: String {
-        return "application/vnd.github.v3+json"
+    var method: String {
+        return "GET"
     }
 
     var queryItems: [URLQueryItem] {
