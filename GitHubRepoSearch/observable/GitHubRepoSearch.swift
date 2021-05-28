@@ -8,15 +8,19 @@
 import Foundation
 
 class GitHubSearchModel: ObservableObject, APIGitHubSearchRepositoriesDelegate {
-
-    @Published var items: [APIItem] = [] //検索結果
-
+    //検索結果
+    @Published var items: [APIItem] = []
+    //更新時間
+    let TIME_INTERVAL: TimeInterval = 2.5
+    //検索クエリ
     var query: String {
         return searchText
     }
-
+    //検索ワード
     var searchText: String = ""
+    //前回情報を保持するTEMPワード
     var tmpText: String = "tmp"
+    //Timer
     var timer: Timer!
 
     init() {
@@ -26,7 +30,7 @@ class GitHubSearchModel: ObservableObject, APIGitHubSearchRepositoriesDelegate {
     /// タイマー開始
     private func startTimer() {
         CLog.d()
-        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(search), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: self.TIME_INTERVAL, target: self, selector: #selector(search), userInfo: nil, repeats: true)
     }
 
     /// タイマー停止
@@ -47,15 +51,20 @@ class GitHubSearchModel: ObservableObject, APIGitHubSearchRepositoriesDelegate {
         }
     }
 
+    ///API成功時
     func onResponseSuccess(model: APISearchRepositories) {
         CLog.d(model)
         var resultList: [APIItem] = []
         for item in model.items {
             resultList.append(APIItem(name: item.name, dump: item))
         }
-        items = resultList
+        DispatchQueue.main.async {
+            self.items = resultList
+        }
     }
 
+    ///API失敗時
+    /// - TODO: Dialogとか表示
     func onResponseFaild(message: String) {
         CLog.d(message)
     }
